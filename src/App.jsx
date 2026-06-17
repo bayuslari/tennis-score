@@ -133,7 +133,30 @@ export default function TennisScoreCounter() {
           --team-b: #15803d;
           --safe-top: env(safe-area-inset-top, 0px);
           --safe-bottom: env(safe-area-inset-bottom, 0px);
+          /* dark mode (default) */
+          --bar-bg: #09090b;
+          --bar-border: #27272a;
+          --bar-text-secondary: #a1a1aa;
+          --btn-bg: #27272a;
+          --modal-bg: #18181b;
+          --input-bg: #27272a;
+          --modal-text: #ffffff;
+          --modal-text-secondary: #a1a1aa;
           font-family: 'Outfit', system-ui, sans-serif;
+        }
+
+        @media (prefers-color-scheme: light) {
+          .tsc-shell {
+            --accent: #84b800;
+            --bar-bg: #ffffff;
+            --bar-border: #e4e4e7;
+            --bar-text-secondary: #71717a;
+            --btn-bg: #f4f4f5;
+            --modal-bg: #ffffff;
+            --input-bg: #f4f4f5;
+            --modal-text: #09090b;
+            --modal-text-secondary: #71717a;
+          }
         }
 
         .tsc-zone-a {
@@ -225,7 +248,7 @@ export default function TennisScoreCounter() {
         className="tsc-zone tsc-zone-a relative flex-1 flex items-center justify-center disabled:opacity-40"
         style={{ backgroundColor: "var(--team-a)" }}
       >
-        <span className="absolute top-4 left-4 tsc-tag" style={{ backgroundColor: "rgba(0,0,0,0.28)" }}>
+        <span className="absolute tsc-tag" style={{ top: "calc(var(--safe-top) + 1rem)", left: "1rem", backgroundColor: "rgba(0,0,0,0.28)" }}>
           <span className="tsc-tag__inner text-xs uppercase tracking-widest text-white font-semibold">
             {config.teamAName}
           </span>
@@ -240,12 +263,14 @@ export default function TennisScoreCounter() {
 
       {/* Net / scoreboard bar */}
       <div
-        className="relative flex items-center justify-between px-5 py-3 bg-zinc-950 border-y border-zinc-800"
+        className="relative flex items-center justify-between px-5 py-3"
+        style={{ backgroundColor: "var(--bar-bg)", borderTop: "1px solid var(--bar-border)", borderBottom: "1px solid var(--bar-border)" }}
       >
         <button
           onClick={undo}
           disabled={history.length === 0}
-          className="tsc-icon-btn p-2 rounded-full bg-zinc-800 disabled:opacity-30"
+          className="tsc-icon-btn p-2 rounded-full disabled:opacity-30"
+          style={{ backgroundColor: "var(--btn-bg)" }}
         >
           <Undo2 className="w-5 h-5" style={{ color: "var(--accent)" }} />
         </button>
@@ -257,14 +282,15 @@ export default function TennisScoreCounter() {
           >
             {score.gamesA} – {score.gamesB}
           </span>
-          <span className="text-xs uppercase tracking-widest text-zinc-400 mt-1">
+          <span className="text-xs uppercase tracking-widest mt-1" style={{ color: "var(--bar-text-secondary)" }}>
             race to {config.racesTo} · {config.noDeuce ? "sudden death" : "deuce"}
           </span>
         </div>
 
         <button
           onClick={openSettings}
-          className="tsc-icon-btn p-2 rounded-full bg-zinc-800"
+          className="tsc-icon-btn p-2 rounded-full"
+          style={{ backgroundColor: "var(--btn-bg)" }}
         >
           <Settings className="w-5 h-5" style={{ color: "var(--accent)" }} />
         </button>
@@ -283,7 +309,7 @@ export default function TennisScoreCounter() {
         >
           {labelB}
         </span>
-        <span className="absolute bottom-4 right-4 tsc-tag" style={{ backgroundColor: "rgba(0,0,0,0.28)" }}>
+        <span className="absolute tsc-tag" style={{ bottom: "calc(var(--safe-bottom) + 1rem)", right: "1rem", backgroundColor: "rgba(0,0,0,0.28)" }}>
           <span className="tsc-tag__inner text-xs uppercase tracking-widest text-white font-semibold">
             {config.teamBName}
           </span>
@@ -324,11 +350,11 @@ export default function TennisScoreCounter() {
       {/* Match-winner overlay */}
       {score.winner && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-5 tsc-winner-pop" style={{ backgroundColor: "var(--accent)" }}>
-          <div className="tsc-ribbon bg-zinc-950 px-10 pt-4 pb-7">
-            <span className="block text-xs uppercase tracking-widest text-zinc-400 text-center">
+          <div className="tsc-ribbon px-10 pt-4 pb-7" style={{ backgroundColor: "var(--bar-bg)" }}>
+            <span className="block text-xs uppercase tracking-widest text-center" style={{ color: "var(--bar-text-secondary)" }}>
               Match winner
             </span>
-            <span className="font-display block text-4xl text-white text-center mt-1">
+            <span className="font-display block text-4xl text-center mt-1" style={{ color: "var(--modal-text)" }}>
               {winnerName}
             </span>
           </div>
@@ -337,7 +363,8 @@ export default function TennisScoreCounter() {
           </span>
           <button
             onClick={newMatch}
-            className="tsc-chip mt-2 px-8 py-3 rounded-full bg-zinc-950 text-white font-bold uppercase tracking-widest"
+            className="tsc-chip mt-2 px-8 py-3 rounded-full font-bold uppercase tracking-widest"
+            style={{ backgroundColor: "var(--bar-bg)", color: "var(--modal-text)" }}
           >
             Play Again
           </button>
@@ -351,18 +378,18 @@ export default function TennisScoreCounter() {
           style={{ backgroundColor: "rgba(0,0,0,0.7)" }}
         >
           <div
-            className="bg-zinc-900 rounded-2xl w-full max-w-sm p-5 flex flex-col gap-5 overflow-y-auto"
-            style={{ maxHeight: "90%" }}
+            className="rounded-2xl w-full max-w-sm p-5 flex flex-col gap-5 overflow-y-auto"
+            style={{ maxHeight: "90%", backgroundColor: "var(--modal-bg)" }}
           >
             <div className="flex items-center justify-between">
-              <span className="font-display text-xl text-white">Match Settings</span>
+              <span className="font-display text-xl" style={{ color: "var(--modal-text)" }}>Match Settings</span>
               <button onClick={() => setShowSettings(false)} className="tsc-icon-btn">
-                <X className="w-5 h-5 text-zinc-400" />
+                <X className="w-5 h-5" style={{ color: "var(--modal-text-secondary)" }} />
               </button>
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-xs uppercase tracking-widest text-zinc-400">
+              <label className="text-xs uppercase tracking-widest" style={{ color: "var(--modal-text-secondary)" }}>
                 Team A Name
               </label>
               <input
@@ -370,12 +397,13 @@ export default function TennisScoreCounter() {
                 onChange={(e) =>
                   setNameDraft((d) => ({ ...d, a: e.target.value }))
                 }
-                className="bg-zinc-800 text-white rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-lime-400"
+                className="rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-lime-400"
+                style={{ backgroundColor: "var(--input-bg)", color: "var(--modal-text)" }}
               />
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-xs uppercase tracking-widest text-zinc-400">
+              <label className="text-xs uppercase tracking-widest" style={{ color: "var(--modal-text-secondary)" }}>
                 Team B Name
               </label>
               <input
@@ -383,12 +411,13 @@ export default function TennisScoreCounter() {
                 onChange={(e) =>
                   setNameDraft((d) => ({ ...d, b: e.target.value }))
                 }
-                className="bg-zinc-800 text-white rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-lime-400"
+                className="rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-lime-400"
+                style={{ backgroundColor: "var(--input-bg)", color: "var(--modal-text)" }}
               />
             </div>
 
             <div className="flex flex-col gap-2">
-              <span className="text-xs uppercase tracking-widest text-zinc-400">
+              <span className="text-xs uppercase tracking-widest" style={{ color: "var(--modal-text-secondary)" }}>
                 Deuce Mode
               </span>
               <div className="flex gap-2">
@@ -396,8 +425,8 @@ export default function TennisScoreCounter() {
                   onClick={() => setConfig((c) => ({ ...c, noDeuce: true }))}
                   className="tsc-chip flex-1 py-2 rounded-lg font-semibold"
                   style={{
-                    backgroundColor: config.noDeuce ? "var(--accent)" : "#27272a",
-                    color: config.noDeuce ? "#09090b" : "#d4d4d8",
+                    backgroundColor: config.noDeuce ? "var(--accent)" : "var(--btn-bg)",
+                    color: config.noDeuce ? "#09090b" : "var(--modal-text)",
                   }}
                 >
                   Sudden Death
@@ -406,8 +435,8 @@ export default function TennisScoreCounter() {
                   onClick={() => setConfig((c) => ({ ...c, noDeuce: false }))}
                   className="tsc-chip flex-1 py-2 rounded-lg font-semibold"
                   style={{
-                    backgroundColor: !config.noDeuce ? "var(--accent)" : "#27272a",
-                    color: !config.noDeuce ? "#09090b" : "#d4d4d8",
+                    backgroundColor: !config.noDeuce ? "var(--accent)" : "var(--btn-bg)",
+                    color: !config.noDeuce ? "#09090b" : "var(--modal-text)",
                   }}
                 >
                   Standard Deuce
@@ -426,8 +455,8 @@ export default function TennisScoreCounter() {
                     onClick={() => setConfig((c) => ({ ...c, racesTo: n }))}
                     className="tsc-chip flex-1 py-2 rounded-lg font-semibold"
                     style={{
-                      backgroundColor: config.racesTo === n ? "var(--accent)" : "#27272a",
-                      color: config.racesTo === n ? "#09090b" : "#d4d4d8",
+                      backgroundColor: config.racesTo === n ? "var(--accent)" : "var(--btn-bg)",
+                      color: config.racesTo === n ? "#09090b" : "var(--modal-text)",
                     }}
                   >
                     {n} games
