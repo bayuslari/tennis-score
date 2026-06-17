@@ -225,7 +225,7 @@ export default function TennisScoreCounter() {
         className="tsc-zone tsc-zone-a relative flex-1 flex items-center justify-center disabled:opacity-40"
         style={{ backgroundColor: "var(--team-a)" }}
       >
-        <span className="absolute top-4 left-4 tsc-tag" style={{ backgroundColor: "rgba(0,0,0,0.28)" }}>
+        <span className="absolute tsc-tag" style={{ top: "calc(var(--safe-top) + 1rem)", left: "1rem", backgroundColor: "rgba(0,0,0,0.28)" }}>
           <span className="tsc-tag__inner text-xs uppercase tracking-widest text-white font-semibold">
             {config.teamAName}
           </span>
@@ -283,7 +283,7 @@ export default function TennisScoreCounter() {
         >
           {labelB}
         </span>
-        <span className="absolute bottom-4 right-4 tsc-tag" style={{ backgroundColor: "rgba(0,0,0,0.28)" }}>
+        <span className="absolute tsc-tag" style={{ bottom: "calc(var(--safe-bottom) + 1rem)", right: "1rem", backgroundColor: "rgba(0,0,0,0.28)" }}>
           <span className="tsc-tag__inner text-xs uppercase tracking-widest text-white font-semibold">
             {config.teamBName}
           </span>
