@@ -131,7 +131,17 @@ export default function TennisScoreCounter() {
           --accent: #d7f205;
           --team-a: #c2410c;
           --team-b: #15803d;
+          --safe-top: env(safe-area-inset-top, 0px);
+          --safe-bottom: env(safe-area-inset-bottom, 0px);
           font-family: 'Outfit', system-ui, sans-serif;
+        }
+
+        .tsc-zone-a {
+          padding-top: var(--safe-top);
+        }
+
+        .tsc-zone-b {
+          padding-bottom: var(--safe-bottom);
         }
 
         .font-display { font-family: var(--font-display); }
@@ -212,7 +222,7 @@ export default function TennisScoreCounter() {
       <button
         onClick={() => addPoint("A")}
         disabled={!!score.winner}
-        className="tsc-zone relative flex-1 flex items-center justify-center disabled:opacity-40"
+        className="tsc-zone tsc-zone-a relative flex-1 flex items-center justify-center disabled:opacity-40"
         style={{ backgroundColor: "var(--team-a)" }}
       >
         <span className="absolute top-4 left-4 tsc-tag" style={{ backgroundColor: "rgba(0,0,0,0.28)" }}>
@@ -264,7 +274,7 @@ export default function TennisScoreCounter() {
       <button
         onClick={() => addPoint("B")}
         disabled={!!score.winner}
-        className="tsc-zone relative flex-1 flex items-center justify-center disabled:opacity-40"
+        className="tsc-zone tsc-zone-b relative flex-1 flex items-center justify-center disabled:opacity-40"
         style={{ backgroundColor: "var(--team-b)" }}
       >
         <span
