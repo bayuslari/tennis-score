@@ -1,4 +1,4 @@
-# Tennis Score Counter
+# Tennis Score
 
 Courtside tennis/padel score counter built for casual doubles matches ("mabar"). Built with React + Vite + Tailwind CSS.
 
